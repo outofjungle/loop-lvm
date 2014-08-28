@@ -2,7 +2,7 @@
 # Cookbook Name:: loop-lvm
 # Recipe:: default
 #
-# Copyright (C) 2014 YOUR_NAME
+# Copyright (C) 2014 Venkat Venkataraju
 #
 # All rights reserved - Do Not Redistribute
 #
