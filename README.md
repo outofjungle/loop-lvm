@@ -1,6 +1,6 @@
 # loop-lvm-cookbook
 
-TODO: Enter the cookbook description here.
+Cookbook to set up LVM on a loopback device
 
 ## Supported Platforms
 

@@ -31,19 +31,19 @@ execute "setup loopback" do
 end
 
 execute "create label for disk" do
-  command "parted /dev/loop0 --script -- mklabel gpt"
-  not_if "parted /dev/loop0 --script print | /bin/grep \"Partition Table: gpt\""
+  command "parted --align optimal /dev/loop0 --script -- mklabel gpt"
+  not_if "parted /dev/loop0 --script -- print | /bin/grep \"Partition Table: gpt\""
   notifies :run, "execute[partition disk]", :immediately
 end
 
 execute "partition disk" do
-  command "parted /dev/loop0 --script -- mkpart primary 0 -1"
+  command "parted --align optimal /dev/loop0 --script -- mkpart primary 0% 100%"
   notifies :run, "execute[set lvm on disk]", :immediately
   action :nothing
 end
 
 execute "set lvm on disk" do
-  command "parted /dev/loop0 --script -- set 1 lvm on"
+  command "parted --align optimal /dev/loop0 --script -- set 1 lvm on"
   action :nothing
 end
 
@@ -58,8 +58,8 @@ execute "create volume group" do
 end
 
 execute "create logical volume" do
-  command "lvcreate -l 60%VG -n lv loopg"
-  only_if "lvcreate -l 60%VG -n lv loopg -t"
+  command "lvcreate --extents 85%VG --name lv loopg"
+  only_if "lvcreate --extents 85%VG --name lv loopg -t"
 end
 
 execute '/sbin/mkfs.ext4 /dev/mapper/loopg-lv' do
