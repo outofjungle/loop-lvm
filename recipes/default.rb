@@ -17,7 +17,7 @@ end
 directory '/mnt/loop-lvm' do
   owner 'root'
   group 'root'
-  mode 00755
+  mode 00777
 end
 
 execute "create disk" do
@@ -62,10 +62,10 @@ execute "create logical volume" do
   only_if "lvcreate --extents 85%VG --name lv loopg -t"
 end
 
-execute '/sbin/mkfs.ext4 /dev/mapper/loopg-lv' do
-  not_if '/usr/bin/file -sL /dev/mapper/loopg-lv | /bin/grep ext4'
+execute '/sbin/mkfs.ext4 /dev/loopg/lv' do
+  not_if '/usr/bin/file -sL /dev/loopg/lv | /bin/grep ext4'
 end
 
-execute '/bin/mount -t ext4 /dev/mapper/loopg-lv /mnt/loop-lvm' do
-  not_if '/bin/mount | /bin/grep "/dev/mapper/loopg-lv"'
+execute '/bin/mount -t ext4 /dev/loopg/lv /mnt/loop-lvm' do
+  not_if '/bin/mount | /bin/grep "/dev/loopg/lv"'
 end
